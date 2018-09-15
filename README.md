@@ -2,6 +2,8 @@
 Besed on DelugeRPG online game, it provides the best moveset against a pokemon team
 
 ### How to use:
+There is a video showing the calculator [here](https://youtu.be/wnfUYn4tbBk).
+
 For each enemy, enter its type and if it is a negative pokémon or not, aways splitting with a commna.
 Example:
 
