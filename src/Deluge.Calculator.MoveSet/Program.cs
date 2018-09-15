@@ -1,5 +1,4 @@
-﻿using Combinatorics.Collections;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,6 +23,7 @@ namespace Deluge.Calculator.MoveSet
             Console.WriteLine("Type your enemy team type here:");
 
             var enemyTypesList = new List<PokemonAttacks>();
+            AttackType parseResult;
 
             for (var count = 0; count < 6; count++)
             {
@@ -33,10 +33,13 @@ namespace Deluge.Calculator.MoveSet
 
                 if (type.ToLower() == "start")
                     break;
-
+                
                 pokemonAttacks.Inverse = type.Split(',').Any(x => x.Trim().ToLower() == "negative");
-                pokemonAttacks.Primary = Enum.Parse<AttackType>(type.Split(',').First(x => x.Trim().ToLower() != "negative"));
-                pokemonAttacks.Secondary = Enum.Parse<AttackType>(type.Split(',').Last(x => x.Trim().ToLower() != "negative"));
+
+                Enum.TryParse(type.Split(',').First(x => x.Trim().ToLower() != "negative"), out parseResult);
+                pokemonAttacks.Primary = parseResult;
+                Enum.TryParse(type.Split(',').Last(x => x.Trim().ToLower() != "negative"), out parseResult);
+                pokemonAttacks.Secondary = parseResult;
 
                 enemyTypesList.Add(pokemonAttacks);
             }
@@ -112,7 +115,9 @@ namespace Deluge.Calculator.MoveSet
                 {
                     var attacks = combination.ToList().Skip(1)
                         .Select(x => x.Item2.First(y => y.Name == combination.ToList()[0].Item2[count].Name && y.Type == combination.ToList()[0].Item2[count].Type))
-                        .Append(combination.ToList()[0].Item2[count]);
+                        .ToList();
+
+                    attacks.Add(combination.ToList()[0].Item2[count]);
 
                     var atkResult = new Attack(attacks.First().Name, attacks.First().Type.ToString(), attacks.Sum(x => x.Power) / 3);
 
@@ -135,8 +140,8 @@ namespace Deluge.Calculator.MoveSet
         {
             if (length < 1) throw new ArgumentOutOfRangeException(nameof(length));
             if (length == 1) return list.Select(t => new Tuple<PokemonAttacks, List<Attack>>[] { t });
-
-            return new Combinations<Tuple<PokemonAttacks, List<Attack>>>(list.ToList(), length).ToList();
+;
+            return Combinations(list.ToList(), length).ToList();
         }
 
         public static void PrintResult(IEnumerable<Tuple<List<PokemonAttacks>, Attack>> results)
@@ -150,6 +155,39 @@ namespace Deluge.Calculator.MoveSet
             }
 
             Console.ReadKey();
+        }
+
+        private static IEnumerable<int[]> CombinationsRosettaWoRecursion(int m, int n)
+        {
+            int[] result = new int[m];
+            Stack<int> stack = new Stack<int>(m);
+            stack.Push(0);
+            while (stack.Count > 0)
+            {
+                int index = stack.Count - 1;
+                int value = stack.Pop();
+                while (value < n)
+                {
+                    result[index++] = value++;
+                    stack.Push(value);
+                    if (index != m) continue;
+                    yield return result;
+                    break;
+                }
+            }
+        }
+
+        public static IEnumerable<T[]> Combinations<T>(List<T> array, int m)
+        {
+            T[] result = new T[m];
+            foreach (int[] j in CombinationsRosettaWoRecursion(m, array.Count))
+            {
+                for (int i = 0; i < m; i++)
+                {
+                    result[i] = array[j[i]];
+                }
+                yield return result;
+            }
         }
     }
 }

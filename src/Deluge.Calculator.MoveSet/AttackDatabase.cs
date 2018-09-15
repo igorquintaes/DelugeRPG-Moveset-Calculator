@@ -470,7 +470,8 @@ namespace Deluge.Calculator.MoveSet
             )
         {
             Name = name;
-            Type = Enum.Parse<AttackType>(type);
+            Enum.TryParse(type, out AttackType t);
+            Type = t;
             Power = power;
         }
 
