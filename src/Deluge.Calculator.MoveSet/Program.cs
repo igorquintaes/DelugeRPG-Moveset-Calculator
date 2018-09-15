@@ -145,7 +145,7 @@ namespace Deluge.Calculator.MoveSet
 
             foreach (var result in results)
             {
-                Console.WriteLine(string.Join(" & ", result.Item1.Select(x => $"{x.Primary.ToString()} {x.Secondary.ToString()} {(x.Inverse ? "Negative" : "")}")));
+                Console.WriteLine(string.Join("& ", result.Item1.Select(x => $"{x.Primary.ToString()} {(x.Secondary == x.Primary ? "" : x.Secondary.ToString())}{(x.Inverse ? " Negative" : "")}")));
                 Console.WriteLine($"{result.Item2.Name}, of type {result.Item2.Type} - Power variation: {result.Item2.Power}{Environment.NewLine}");
             }
 
