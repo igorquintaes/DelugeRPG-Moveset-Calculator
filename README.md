@@ -19,3 +19,19 @@ After that, a message about an inversa battle will appear. You can choose if you
 
 The final result is a list with all enemy types and what attack use against them.
 
+### Download
+
+You can find the program download ink in the [Release Tab](https://github.com/igorquintaes/DelugeRPG-Moveset-Calculator/releases). Also, you can clone the project and execut it from 'dist' folder; or compile it using a desired IDE compatible with C# .Net Framework 4.
+
+### Requirements
+
+- .Net Framework 4
+- Windows OS
+- No internet access required (yes, you can also run it inside a Virtual Machine if you are afraid - lol)
+
+### Future improvements
+
+- Create an interface based on WPF Framework
+- Create a Lib based on game trainers
+- Port it to a web-based calculator on GitHub
+- ... And more, accepting suggestions!
